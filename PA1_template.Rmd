@@ -9,10 +9,9 @@ output:
 
 ## Loading and preprocessing the data
 ```{r}
+unzip("activity.zip") # Unzip archive
 data=read.csv("activity.csv")
-data$date=as.Date(data$date)
-
-
+data$date <-as.Date(data$date, "%Y-%m-%d")
 
 ```
 
@@ -21,20 +20,55 @@ data$date=as.Date(data$date)
 
 ## What is mean total number of steps taken per day?
 ```{r}
-
+q <- mean(data$steps,na.rm=TRUE)
+d <- median(data$steps,na.rm=TRUE)
 
 ```
 
+The mean total number of steps taken per day is `r q`. The median is `r d`.
 
-## What is the average daily activity pattern?
+## The Histogram showing the total number of steps
 ```{r}
-
+hist(tapply(data$steps,data$date,sum,na.rm=TRUE),xlab="Total number of steps per day",main=NULL,col="wheat")
 
 ```
+The histogram to show the average number of steps taken per day.
 
 
 ## Imputing missing values
 ```{r}
+missing <- dim(data[is.na(data$steps),])[1]
+
+```
+
+There are `r missing` rows with missing values.
+
+
+## Time-series plot
+
+```{r}
+# x-axis - Time interval (5, 10, 15, ...)
+# y-axis - Average number of steps taken across all days for this time interval
+
+data$date <- strptime(data$date, "%Y-%m-%d")
+
+# Keep a list of all possible days
+uniqueDates <- unique(data$dates)
+# Keep a list of all possible intervals
+uniqueIntervals <- unique(data$interval)
+
+# Split up the data according to the interval
+intervalSplit <- split(data$steps, data$interval)
+
+# Find the average amount of steps per time interval - ignore NA values
+averageStepsPerInterval <- sapply(intervalSplit, mean, na.rm=TRUE)
+
+# Plot the time-series graph
+plot(uniqueIntervals, averageStepsPerInterval, type="l",
+     main="Average number of steps per interval across all days", 
+     xlab="Interval", ylab="Average # of steps across all days", 
+     lwd=2, col="blue")
+
 
 
 ```
@@ -43,7 +77,14 @@ data$date=as.Date(data$date)
 ## Are there differences in activity patterns between weekdays and weekends?
 
 ```{r}
+# Find the location of where the maximum is
+#maxIntervalDays <- max(averageStepsPerInterval, na.rm=TRUE)
+#maxIndex <- as.numeric(which(averageStepsPerInterval == maxIntervalDays))
 
+# Plot a vertical line where the max is
+#maxInterval <- uniqueIntervals[maxIndex]
+#abline(v=maxInterval, col="red", lwd=3)
 
 ```
+
 
