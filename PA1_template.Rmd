@@ -1,0 +1,49 @@
+My First Markdown Assignment for July 2015
+---
+title: "Reproducible Research: Peer Assessment 1"
+output: 
+  html_document:
+    keep_md: true
+---
+
+
+## Loading and preprocessing the data
+```{r}
+data=read.csv("activity.csv")
+data$date=as.Date(data$date)
+
+
+
+```
+
+
+
+
+## What is mean total number of steps taken per day?
+```{r}
+
+
+```
+
+
+## What is the average daily activity pattern?
+```{r}
+
+
+```
+
+
+## Imputing missing values
+```{r}
+
+
+```
+
+
+## Are there differences in activity patterns between weekdays and weekends?
+
+```{r}
+
+
+```
+
